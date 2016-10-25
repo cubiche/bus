@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Cubiche package.
  *
@@ -7,17 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Cubiche\Core\Bus\Tests\Fixtures\Command;
+namespace Cubiche\Core\Bus\Tests\Fixtures\Event;
 
-use Cubiche\Core\Bus\Command\CommandNamedInterface;
+use Cubiche\Core\Bus\Event\Event;
 use Cubiche\Core\Validator\Mapping\ClassMetadata;
 
 /**
- * LogoutUserCommand class.
+ * LogoutUserEvent class.
  *
  * @author Ivannis Suárez Jerez <ivannis.suarez@gmail.com>
  */
-class LogoutUserCommand implements CommandNamedInterface
+class LogoutUserEvent extends Event
 {
     /**
      * @var string
@@ -25,7 +26,7 @@ class LogoutUserCommand implements CommandNamedInterface
     protected $email;
 
     /**
-     * LogoutUserCommand constructor.
+     * LogoutUserEvent constructor.
      *
      * @param $email
      */
@@ -48,22 +49,6 @@ class LogoutUserCommand implements CommandNamedInterface
     public function setEmail($email)
     {
         $this->email = $email;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLogin()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function commandName()
-    {
-        return 'logout_user';
     }
 
     /**
