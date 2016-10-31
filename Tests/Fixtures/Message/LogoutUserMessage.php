@@ -8,18 +8,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Cubiche\Core\Bus\Tests\Fixtures\Event;
 
-use Cubiche\Core\Bus\Event\Event;
-use Cubiche\Core\Validator\Assert;
+namespace Cubiche\Core\Bus\Tests\Fixtures\Message;
+
+use Cubiche\Core\Bus\MessageInterface;
 use Cubiche\Core\Validator\Mapping\ClassMetadata;
 
 /**
- * LoginUserEvent class.
+ * LogoutUserMessage class.
  *
  * @author Ivannis Suárez Jerez <ivannis.suarez@gmail.com>
  */
-class LoginUserEvent extends Event
+class LogoutUserMessage implements MessageInterface
 {
     /**
      * @var string
@@ -27,7 +27,7 @@ class LoginUserEvent extends Event
     protected $email;
 
     /**
-     * LoginUserEvent constructor.
+     * LogoutUserMessage constructor.
      *
      * @param $email
      */
@@ -57,9 +57,5 @@ class LoginUserEvent extends Event
      */
     public static function loadValidatorMetadata(ClassMetadata $classMetadata)
     {
-        $classMetadata->addPropertyConstraint(
-            'email',
-            Assert::email()
-        );
     }
 }
