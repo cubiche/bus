@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the Cubiche package.
  *
@@ -9,15 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Cubiche\Core\Bus\Tests\Units\Middlewares\Handler\Resolver\HandlerMethodName;
+namespace Cubiche\Core\Bus\Tests\Units\Middlewares\Handler\Resolver\NameOfMessage;
 
 use Cubiche\Core\Bus\Exception\NotFoundException;
-use Cubiche\Core\Bus\Middlewares\Handler\Resolver\HandlerMethodName\ChainResolver;
-use Cubiche\Core\Bus\Middlewares\Handler\Resolver\HandlerMethodName\DefaultResolver;
-use Cubiche\Core\Bus\Middlewares\Handler\Resolver\HandlerMethodName\MethodWithShortObjectNameResolver;
+use Cubiche\Core\Bus\Middlewares\Handler\Resolver\NameOfMessage\ChainResolver;
+use Cubiche\Core\Bus\Middlewares\Handler\Resolver\NameOfMessage\FromClassNameResolver;
+use Cubiche\Core\Bus\Middlewares\Handler\Resolver\NameOfMessage\FromMessageNamedResolver;
 use Cubiche\Core\Bus\Tests\Fixtures\Message\LoginUserMessage;
 use Cubiche\Core\Bus\Tests\Fixtures\Message\LogoutUserMessage;
-use Cubiche\Core\Bus\Tests\Fixtures\InvalidHandlerMethodNameResolver;
 use Cubiche\Core\Bus\Tests\Units\TestCase;
 
 /**
@@ -33,14 +31,18 @@ class ChainResolverTests extends TestCase
     public function testResolve()
     {
         $this
-            ->given($resolver1 = new InvalidHandlerMethodNameResolver())
-            ->given($resolver2 = new MethodWithShortObjectNameResolver('Message'))
-            ->and($resolver3 = new DefaultResolver())
-            ->and($resolver = new ChainResolver([$resolver1, $resolver2, $resolver3]))
-            ->when($result = $resolver->resolve(LoginUserMessage::class))
+            ->given($resolver1 = new FromMessageNamedResolver())
+            ->and($resolver2 = new FromClassNameResolver())
+            ->and($resolver = new ChainResolver([$resolver1, $resolver2]))
+            ->when($result = $resolver->resolve(new LoginUserMessage('ivan@cubiche.com', 'plainpassword')))
             ->then()
                 ->string($result)
-                    ->isEqualTo('loginUser')
+                    ->isEqualTo(LoginUserMessage::class)
+            ->and()
+            ->when($result = $resolver->resolve(new LogoutUserMessage('ivan@cubiche.com')))
+            ->then()
+                ->string($result)
+                    ->isEqualTo('logout_user')
         ;
 
         $this
